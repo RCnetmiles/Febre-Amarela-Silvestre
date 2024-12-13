@@ -9,24 +9,53 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       margin: 0;
       padding: 0;
-      min-height: 100vh;
     }
 
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
+    /* Cabeçalho */
+    header {
+      background-color: #00539c;
+      color: #fdb813;
+      padding: 20px;
+      text-align: center;
     }
 
+    header h1 {
+      margin: 0;
+    }
+
+    /* Menu */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    nav button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00539c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+    }
+
+    nav button:hover {
+      background-color: #003f7d;
+    }
+
+    /* Tabuleiro */
     .game-board {
       display: grid;
-      grid-template-columns: repeat(4, 100px);
+      grid-template-columns: repeat(3, 100px);
       gap: 15px;
+      justify-content: center;
+      margin: 20px auto;
     }
 
     .card {
@@ -79,27 +108,56 @@
       opacity: 0;
     }
 
+    /* Box de informação */
     .info {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 5px;
-      background-color: #fff;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: WhiteSmoke;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      text-align: center;
       display: none;
     }
 
-    @media (max-width: 600px) {
-      .game-board {
-        grid-template-columns: repeat(2, 100px);
-        gap: 10px;
-      }
+    .info p {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .info button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #00539c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .info button:hover {
+      background-color: #003f7d;
     }
   </style>
 </head>
 <body>
-  <h1>Jogo da Memória - Febre Amarela</h1>
+  <header>
+    <h1>Jogo da Memória - Febre Amarela</h1>
+  </header>
+
+  <nav>
+    <button onclick="startGame()">Iniciar Jogo</button>
+    <button onclick="showInfo('Sobre o Jogo', 'Este é um jogo educativo sobre a febre amarela silvestre.')">Informações</button>
+  </nav>
+
   <div class="game-board" id="gameBoard"></div>
-  <div class="info" id="infoBox"></div>
+
+  <div class="info" id="infoBox">
+    <p id="infoText"></p>
+    <button onclick="closeInfo()">Fechar</button>
+  </div>
 
   <script>
     // Dados das cartas e informações
@@ -107,24 +165,24 @@
       { name: "Vetor", image: "https://via.placeholder.com/100x140?text=Vetor", info: "O vetor da febre amarela é o mosquito." },
       { name: "Macaco", image: "https://via.placeholder.com/100x140?text=Macaco", info: "Os macacos são sentinelas da febre amarela." },
       { name: "Vírus", image: "https://via.placeholder.com/100x140?text=Vírus", info: "O vírus da febre amarela é um flavivírus." },
-      { name: "Prevenção", image: "https://via.placeholder.com/100x140?text=Prevenção", info: "Vacinação é a melhor forma de prevenir a febre amarela." },
-      { name: "Sintomas", image: "https://via.placeholder.com/100x140?text=Sintomas", info: "Febre alta, dores no corpo e icterícia são sintomas comuns." }
+      { name: "Prevenção", image: "https://via.placeholder.com/100x140?text=Prevenção", info: "Vacinação é a melhor forma de prevenir a febre amarela." }
     ];
 
-    // Duplicar e embaralhar as cartas
-    let cards = [...cardsData, ...cardsData].sort(() => Math.random() - 0.5);
-
-    // Variáveis de controle
+    let cards = [];
     let flippedCards = [];
     let matchedCards = 0;
 
-    // Seletores
     const gameBoard = document.getElementById("gameBoard");
     const infoBox = document.getElementById("infoBox");
+    const infoText = document.getElementById("infoText");
 
-    // Renderizar cartas no tabuleiro
-    function createBoard() {
-      cards.forEach((card, index) => {
+    function startGame() {
+      // Resetar o jogo
+      gameBoard.innerHTML = "";
+      matchedCards = 0;
+      cards = [...cardsData, ...cardsData].sort(() => Math.random() - 0.5);
+
+      cards.forEach((card) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("card");
         cardElement.dataset.name = card.name;
@@ -139,7 +197,6 @@
       });
     }
 
-    // Virar carta
     function flipCard(card) {
       if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
         card.classList.add("flipped");
@@ -151,11 +208,10 @@
       }
     }
 
-    // Verificar se as cartas combinam
     function checkMatch() {
       const [card1, card2] = flippedCards;
       if (card1.dataset.name === card2.dataset.name) {
-        showInfo(card1.dataset.name);
+        showInfo(card1.dataset.name, cardsData.find(card => card.name === card1.dataset.name).info);
         matchedCards += 2;
         flippedCards = [];
 
@@ -171,16 +227,14 @@
       }
     }
 
-    // Mostrar informação sobre a carta
-    function showInfo(cardName) {
-      const cardInfo = cardsData.find(card => card.name === cardName).info;
-      infoBox.textContent = cardInfo;
+    function showInfo(title, text) {
+      infoText.innerHTML = `<strong>${title}</strong><br>${text}`;
       infoBox.style.display = "block";
-      setTimeout(() => (infoBox.style.display = "none"), 3000);
     }
 
-    // Inicializar o jogo
-    createBoard();
+    function closeInfo() {
+      infoBox.style.display = "none";
+    }
   </script>
 </body>
 </html>
