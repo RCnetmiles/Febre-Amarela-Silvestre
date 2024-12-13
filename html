@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Memória - Febre Amarela</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      gap: 15px;
+    }
+
+    .card {
+      width: 100px;
+      height: 140px;
+      background-color: #eeeeee;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: scale(1);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.1);
+    }
+
+    .card img {
+      width: 70%;
+      height: 70%;
+      display: none;
+    }
+
+    .card.flipped img {
+      display: block;
+    }
+
+    .card::before {
+      content: "❓";
+      font-size: 2rem;
+      color: #555;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background-color: #ffcc00;
+      transition: opacity 0.3s;
+    }
+
+    .card.flipped::before {
+      opacity: 0;
+    }
+
+    .info {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .game-board {
+        grid-template-columns: repeat(2, 100px);
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo da Memória - Febre Amarela</h1>
+  <div class="game-board" id="gameBoard"></div>
+  <div class="info" id="infoBox"></div>
+
+  <script>
+    // Dados das cartas e informações
+    const cardsData = [
+      { name: "Vetor", image: "https://via.placeholder.com/100x140?text=Vetor", info: "O vetor da febre amarela é o mosquito." },
+      { name: "Macaco", image: "https://via.placeholder.com/100x140?text=Macaco", info: "Os macacos são sentinelas da febre amarela." },
+      { name: "Vírus", image: "https://via.placeholder.com/100x140?text=Vírus", info: "O vírus da febre amarela é um flavivírus." },
+      { name: "Prevenção", image: "https://via.placeholder.com/100x140?text=Prevenção", info: "Vacinação é a melhor forma de prevenir a febre amarela." },
+      { name: "Sintomas", image: "https://via.placeholder.com/100x140?text=Sintomas", info: "Febre alta, dores no corpo e icterícia são sintomas comuns." }
+    ];
+
+    // Duplicar e embaralhar as cartas
+    let cards = [...cardsData, ...cardsData].sort(() => Math.random() - 0.5);
+
+    // Variáveis de controle
+    let flippedCards = [];
+    let matchedCards = 0;
+
+    // Seletores
+    const gameBoard = document.getElementById("gameBoard");
+    const infoBox = document.getElementById("infoBox");
+
+    // Renderizar cartas no tabuleiro
+    function createBoard() {
+      cards.forEach((card, index) => {
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card");
+        cardElement.dataset.name = card.name;
+
+        const cardImage = document.createElement("img");
+        cardImage.src = card.image;
+        cardImage.alt = card.name;
+
+        cardElement.appendChild(cardImage);
+        cardElement.addEventListener("click", () => flipCard(cardElement));
+        gameBoard.appendChild(cardElement);
+      });
+    }
+
+    // Virar carta
+    function flipCard(card) {
+      if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+        card.classList.add("flipped");
+        flippedCards.push(card);
+
+        if (flippedCards.length === 2) {
+          checkMatch();
+        }
+      }
+    }
+
+    // Verificar se as cartas combinam
+    function checkMatch() {
+      const [card1, card2] = flippedCards;
+      if (card1.dataset.name === card2.dataset.name) {
+        showInfo(card1.dataset.name);
+        matchedCards += 2;
+        flippedCards = [];
+
+        if (matchedCards === cards.length) {
+          setTimeout(() => alert("Parabéns! Você completou o jogo!"), 500);
+        }
+      } else {
+        setTimeout(() => {
+          card1.classList.remove("flipped");
+          card2.classList.remove("flipped");
+          flippedCards = [];
+        }, 1000);
+      }
+    }
+
+    // Mostrar informação sobre a carta
+    function showInfo(cardName) {
+      const cardInfo = cardsData.find(card => card.name === cardName).info;
+      infoBox.textContent = cardInfo;
+      infoBox.style.display = "block";
+      setTimeout(() => (infoBox.style.display = "none"), 3000);
+    }
+
+    // Inicializar o jogo
+    createBoard();
+  </script>
+</body>
+</html>
