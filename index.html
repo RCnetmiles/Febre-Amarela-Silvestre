@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jogo da Memória - Febre Amarela</title>
   <style>
-    /* Estilos gerais (mantém os mesmos do código anterior) */
+    /* Estilos gerais */
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f9;
       margin: 0;
       padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     header {
@@ -44,7 +47,7 @@
 
     .game-board {
       display: grid;
-      grid-template-columns: repeat(4, 100px);
+      grid-template-columns: repeat(3, 100px);
       gap: 15px;
       justify-content: center;
       margin: 20px auto;
@@ -131,6 +134,29 @@
     .info button:hover {
       background-color: #003f7d;
     }
+
+    footer {
+      background-color: #00539c;
+      color: #fdb813;
+      padding: 20px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    footer button {
+      background: #00539c;
+      border-radius: 6px;
+      padding: 15px;
+      cursor: pointer;
+      color: #fdb813;
+      border: none;
+      font-size: 28px;
+      transition: background-color 0.3s;
+    }
+
+    footer button:hover {
+      background: #003f7d;
+    }
   </style>
 </head>
 <body>
@@ -149,6 +175,15 @@
     <p id="infoText"></p>
     <button onclick="closeInfo()">Fechar</button>
   </div>
+
+  <footer>
+    <p>&copy; 2023 Laboratório Maker. Todos os direitos reservados.</p>
+    <p>
+      <a href="https://www.instagram.com/labmakercefetrj/">
+        <button>Instagram</button>
+      </a>
+    </p>
+  </footer>
 
   <script>
     // Dados das cartas e informações
@@ -228,9 +263,5 @@
       infoBox.style.display = "none";
     }
   </script>
-  <footer>
-    <p>&copy; 2023 Laboratório Maker. Todos os direitos reservados.</p>
-    <p> <a href="https://www.instagram.com/labmakercefetrj/"><button style="background: #00539c; border-radius: 6px; padding: 15px; cursor: pointer; color: #fdb813; border: none; font-size: 28px;">Instagram</button></a> </p>
-  </footer>
 </body>
 </html>
