@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jogo da Memória - Febre Amarela</title>
   <style>
-    /* Estilos gerais */
+    /* Estilos gerais (mantém os mesmos do código anterior) */
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f9;
@@ -13,7 +13,6 @@
       padding: 0;
     }
 
-    /* Cabeçalho */
     header {
       background-color: #00539c;
       color: #fdb813;
@@ -21,11 +20,6 @@
       text-align: center;
     }
 
-    header h1 {
-      margin: 0;
-    }
-
-    /* Menu */
     nav {
       display: flex;
       justify-content: center;
@@ -41,7 +35,6 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
       transition: background-color 0.3s;
     }
 
@@ -49,10 +42,9 @@
       background-color: #003f7d;
     }
 
-    /* Tabuleiro */
     .game-board {
       display: grid;
-      grid-template-columns: repeat(3, 100px);
+      grid-template-columns: repeat(4, 100px);
       gap: 15px;
       justify-content: center;
       margin: 20px auto;
@@ -108,7 +100,6 @@
       opacity: 0;
     }
 
-    /* Box de informação */
     .info {
       position: fixed;
       top: 50%;
@@ -165,7 +156,9 @@
       { name: "Vetor", image: "https://via.placeholder.com/100x140?text=Vetor", info: "O vetor da febre amarela é o mosquito." },
       { name: "Macaco", image: "https://via.placeholder.com/100x140?text=Macaco", info: "Os macacos são sentinelas da febre amarela." },
       { name: "Vírus", image: "https://via.placeholder.com/100x140?text=Vírus", info: "O vírus da febre amarela é um flavivírus." },
-      { name: "Prevenção", image: "https://via.placeholder.com/100x140?text=Prevenção", info: "Vacinação é a melhor forma de prevenir a febre amarela." }
+      { name: "Prevenção", image: "https://via.placeholder.com/100x140?text=Prevenção", info: "Vacinação é a melhor forma de prevenir a febre amarela." },
+      { name: "Sintomas", image: "https://via.placeholder.com/100x140?text=Sintomas", info: "Febre alta, dores no corpo e icterícia são sintomas comuns." },
+      { name: "Região", image: "https://via.placeholder.com/100x140?text=Região", info: "A febre amarela silvestre ocorre em áreas rurais e florestais." }
     ];
 
     let cards = [];
@@ -177,7 +170,6 @@
     const infoText = document.getElementById("infoText");
 
     function startGame() {
-      // Resetar o jogo
       gameBoard.innerHTML = "";
       matchedCards = 0;
       cards = [...cardsData, ...cardsData].sort(() => Math.random() - 0.5);
