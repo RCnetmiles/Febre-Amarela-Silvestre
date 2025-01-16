@@ -109,6 +109,7 @@
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
       text-align: center;
       display: none;
+      z-index: 1000;
     }
 
     .info p {
@@ -142,7 +143,7 @@
       text-align: center;
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
       display: none;
-      z-index: 1000;
+      z-index: 999;
     }
 
     .end-game p {
@@ -212,6 +213,7 @@
     let cards = [];
     let flippedCards = [];
     let matchedCards = 0;
+    let isInfoVisible = false;
 
     const gameBoard = document.getElementById("gameBoard");
     const infoBox = document.getElementById("infoBox");
@@ -235,6 +237,17 @@
 
         cardElement.appendChild(cardImage);
         cardElement.addEventListener("click", () => flipCard(cardElement));
+
+        // Permitir que mensagens sejam reabertas ao clicar e segurar
+        cardElement.addEventListener("mousedown", (e) => {
+          if (cardElement.classList.contains("matched")) {
+            const holdTimer = setTimeout(() => {
+              showInfo(card.name, cardsData.find(c => c.name === card.name).info);
+            }, 500);
+            cardElement.addEventListener("mouseup", () => clearTimeout(holdTimer));
+          }
+        });
+
         gameBoard.appendChild(cardElement);
       });
     }
@@ -253,14 +266,14 @@
     function checkMatch() {
       const [card1, card2] = flippedCards;
       if (card1.dataset.name === card2.dataset.name) {
+        card1.classList.add("matched");
+        card2.classList.add("matched");
         showInfo(card1.dataset.name, cardsData.find(card => card.name === card1.dataset.name).info);
         matchedCards += 2;
         flippedCards = [];
 
         if (matchedCards === cards.length) {
-          setTimeout(() => {
-            endGameBox.style.display = "block";
-          }, 500);
+          isInfoVisible = true;
         }
       } else {
         setTimeout(() => {
@@ -278,7 +291,12 @@
 
     function closeInfo() {
       infoBox.style.display = "none";
+      if (isInfoVisible && matchedCards === cards.length) {
+        endGameBox.style.display = "block";
+        isInfoVisible = false;
+      }
     }
   </script>
 </body>
 </html>
+
