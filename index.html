@@ -181,7 +181,7 @@
 
   <nav>
     <button onclick="startGame()">Iniciar Jogo</button>
-    <button onclick="showInfo('Sobre o Jogo', 'Este é um jogo educativo sobre a febre amarela silvestre.')">Informações</button>
+    <button onclick="showInfo('Sobre o Jogo', 'Este jogo tem missão educativa e consientizadora. É um jogo da memória com elementos informativos sobre febre amarela silvestre (Vetor, sintomas, prevenção...).')">Informações</button>
   </nav>
 
   <div class="game-board" id="gameBoard"></div>
@@ -236,24 +236,15 @@
         cardImage.alt = card.name;
 
         cardElement.appendChild(cardImage);
-        cardElement.addEventListener("click", () => flipCard(cardElement));
-
-        // Permitir que mensagens sejam reabertas ao clicar e segurar
-        cardElement.addEventListener("mousedown", (e) => {
-          if (cardElement.classList.contains("matched")) {
-            const holdTimer = setTimeout(() => {
-              showInfo(card.name, cardsData.find(c => c.name === card.name).info);
-            }, 500);
-            cardElement.addEventListener("mouseup", () => clearTimeout(holdTimer));
-          }
-        });
-
+        cardElement.addEventListener("click", () => handleCardClick(cardElement));
         gameBoard.appendChild(cardElement);
       });
     }
 
-    function flipCard(card) {
-      if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+    function handleCardClick(card) {
+      if (card.classList.contains("matched")) {
+        showInfo(card.dataset.name, cardsData.find(c => c.name === card.dataset.name).info);
+      } else if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
         card.classList.add("flipped");
         flippedCards.push(card);
 
@@ -299,4 +290,3 @@
   </script>
 </body>
 </html>
-
