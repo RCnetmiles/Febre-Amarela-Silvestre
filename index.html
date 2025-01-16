@@ -64,23 +64,21 @@
       position: relative;
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transform: scale(1);
-      transition: transform 0.2s;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
     }
 
-    .card:hover {
-      transform: scale(1.1);
+    .card.flipped {
+      transform: rotateY(180deg);
     }
 
     .card img {
       width: 95%;
       height: 95%;
-      display: none;
       border-radius: 10px;
-    }
-
-    .card.flipped img {
-      display: block;
+      backface-visibility: hidden;
+      position: absolute;
+      transform: rotateY(180deg);
     }
 
     .card::before {
@@ -97,11 +95,7 @@
       height: 100%;
       border-radius: 10px;
       background-color: #ffcc00;
-      transition: opacity 0.3s;
-    }
-
-    .card.flipped::before {
-      opacity: 0;
+      backface-visibility: hidden;
     }
 
     .info {
@@ -136,27 +130,46 @@
       background-color: #003f7d;
     }
 
+    .end-game {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      border: 2px solid #00539c;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 1000;
+    }
+
+    .end-game p {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .end-game button {
+      padding: 10px 20px;
+      background-color: #00539c;
+      color: #fdb813;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .end-game button:hover {
+      background-color: #003f7d;
+    }
+
     footer {
       background-color: #00539c;
       color: #fdb813;
       padding: 20px;
       text-align: center;
       margin-top: auto;
-    }
-
-    footer button {
-      background: #00539c;
-      border-radius: 6px;
-      padding: 15px;
-      cursor: pointer;
-      color: #fdb813;
-      border: none;
-      font-size: 28px;
-      transition: background-color 0.3s;
-    }
-
-    footer button:hover {
-      background: #003f7d;
     }
   </style>
 </head>
@@ -177,17 +190,16 @@
     <button onclick="closeInfo()">Fechar</button>
   </div>
 
+  <div class="end-game" id="endGameBox">
+    <p>🎉 Parabéns! Você completou o jogo! 🎉</p>
+    <button onclick="startGame()">Jogar Novamente</button>
+  </div>
+
   <footer>
-    <p>&copy; 2023 Laboratório Maker. Todos os direitos reservados.</p>
-    <p>
-      <a href="https://www.instagram.com/labmakercefetrj/">
-        <button>Instagram</button>
-      </a>
-    </p>
+    <p>&copy; 2023 UNIRIO. Todos os direitos reservados.</p>
   </footer>
 
   <script>
-    // Dados das cartas e informações
     const cardsData = [
       { name: "Vetor", image: "https://via.placeholder.com/100x140?text=Vetor", info: "O vetor da febre amarela é o mosquito." },
       { name: "Macaco", image: "https://via.placeholder.com/100x140?text=Macaco", info: "Os macacos são sentinelas da febre amarela." },
@@ -204,9 +216,11 @@
     const gameBoard = document.getElementById("gameBoard");
     const infoBox = document.getElementById("infoBox");
     const infoText = document.getElementById("infoText");
+    const endGameBox = document.getElementById("endGameBox");
 
     function startGame() {
       gameBoard.innerHTML = "";
+      endGameBox.style.display = "none";
       matchedCards = 0;
       cards = [...cardsData, ...cardsData].sort(() => Math.random() - 0.5);
 
@@ -244,7 +258,9 @@
         flippedCards = [];
 
         if (matchedCards === cards.length) {
-          setTimeout(() => alert("Parabéns! Você completou o jogo!"), 500);
+          setTimeout(() => {
+            endGameBox.style.display = "block";
+          }, 500);
         }
       } else {
         setTimeout(() => {
