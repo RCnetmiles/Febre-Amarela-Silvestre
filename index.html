@@ -20,7 +20,21 @@
       background-color: #00539c;
       color: #fdb813;
       padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header img {
+      height: 50px;
+      margin-right: 20px;
+    }
+
+    header h1 {
+      flex-grow: 1;
       text-align: center;
+      margin: 0;
+      font-size: 1.5rem;
     }
 
     nav {
@@ -176,6 +190,7 @@
 </head>
 <body>
   <header>
+    <img src="https://www.unirio.br/comunicacaosocial/imagens/imagens-identidade-visual-unirio/novologounirionegativo.png" alt="Logo UNIRIO">
     <h1>Jogo da Memória - Febre Amarela</h1>
   </header>
 
@@ -203,11 +218,11 @@
   <script>
     const cardsData = [
       { name: "Vetor", image: "https://s2.glbimg.com/BeGPqQyg6khgIDeNahuFdyvrYbs=/e.glbimg.com/og/ed/f/original/2018/01/19/foto05.jpg", info: "Os vetores da febre amarela silvestre são os mosquito do gênero Haemagogus e Sabethes." },
-      { name: "Macaco", image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhCLcDe9CjIHUg2UjNa24f2mRmY2PVFA3ye2U1SJv8IP4rIuTBfxiTNA5L7GqBjErb_loCSxTjitt3hKgNTpFXBo4PR7TlrxsQDjJu92gBt1-sDM1a15MJlEx8gJTS_hejt8Nayytlc-sZy/s640/MACACO+4.jpg", info: "Os macacos são sentinelas da febre amarela, como o macaco-aranha e o bugio. Eles não transmitem a doença para os humanos." },
+      { name: "Macaco", image: "https://webterra.com.br/wp-content/uploads/2023/02/macaco_febre_amarela_widelg.jpg", info: "Os macacos são sentinelas da febre amarela, como o macaco-aranha e o bugio. Eles não transmitem a doença para os humanos." },
       { name: "Vírus", image: "https://iili.io/2PHaakb.jpg", info: "O vírus da febre amarela é um flavivírus." },
       { name: "Prevenção", image: "https://media.gazetadopovo.com.br/2019/02/3f012378aa41471fe66d64c8c98010f2-gpLarge.jpg", info: "Vacinação é a melhor forma de prevenir a febre amarela." },
       { name: "Sintomas", image: "https://s2-g1.glbimg.com/Awi8XL7WSEEUftFt1PGtqTKZEZs=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/9/a/GE8O4UTAK3M0MAQBKliw/sintomas-febre-amarela.jpg", info: "Febre alta, dores no corpo e icterícia são sintomas comuns." },
-      { name: "Região", image: "https://cdn-icons-png.flaticon.com/512/14105/14105797.png", info: "Anualmente, são observados casos de febre amarela silvestre nas regiões Norte e Centro-Oeste do Brasil." }
+      { name: "Região", image: "https://media.istockphoto.com/id/1357215697/pt/vetorial/doodle-freehand-drawing-of-brazil-map.jpg?s=612x612&w=0&k=20&c=79P5qPmsz0iTthACt89oxcyjrsvGOG1gtLkLdD-yNUo=", info: "Anualmente, são observados casos de febre amarela silvestre nas regiões Norte e Centro-Oeste do Brasil." }
     ];
 
     let cards = [];
